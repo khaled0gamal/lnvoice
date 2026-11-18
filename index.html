@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فاتورتي | نظام إدارة الطلبات والفواتير</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>فاتورتي</h1>
+                    <span>إدارة ذكية لمشروعك</span>
+                </div>
+            </div>
+            <button class="sidebar-close" id="sidebarClose" aria-label="إغلاق القائمة">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i>
+                <span>لوحة التحكم</span>
+            </a>
+            <a href="#" class="nav-item" data-page="orders">
+                <i class="fas fa-clipboard-list"></i>
+                <span>إدارة الطلبات</span>
+            </a>
+            <a href="#" class="nav-item" data-page="products">
+                <i class="fas fa-box-open"></i>
+                <span>المنتجات</span>
+                <span class="nav-badge">قريباً</span>
+            </a>
+            <a href="#" class="nav-item" data-page="customers">
+                <i class="fas fa-users"></i>
+                <span>العملاء</span>
+                <span class="nav-badge">قريباً</span>
+            </a>
+            <a href="#" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i>
+                <span>الإعدادات</span>
+                <span class="nav-badge">قريباً</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">نورة المهندي</span>
+                    <span class="user-role">مديرة المتجر</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div class="topbar-right">
+                <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="page-title">
+                    <h2 id="pageTitle">لوحة التحكم</h2>
+                    <p id="pageSubtitle">مرحباً بك، نورة 👋 إليك ملخص أعمالك اليوم</p>
+                </div>
+            </div>
+            <div class="topbar-left">
+                <button class="btn btn-primary" id="btnNewOrder">
+                    <i class="fas fa-plus"></i>
+                    <span>طلب جديد</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== DASHBOARD PAGE ===== -->
+        <section class="page active" id="pageDashboard">
+            <!-- STATS CARDS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #8A1538, #5E0B24);">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">إجمالي المبيعات</span>
+                        <span class="stat-value" id="statTotalSales">0</span>
+                        <span class="stat-currency">ر.ق</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #2563EB, #1D4ED8);">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">طلبات قيد التحضير</span>
+                        <span class="stat-value" id="statActive">0</span>
+                        <span class="stat-currency">طلب</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #D97706, #B45309);">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">جاهزة للتوصيل</span>
+                        <span class="stat-value" id="statReady">0</span>
+                        <span class="stat-currency">طلب</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #059669, #047857);">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">تم التسليم</span>
+                        <span class="stat-value" id="statCompleted">0</span>
+                        <span class="stat-currency">طلب</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT ORDERS -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-clock"></i> أحدث الطلبات</h3>
+                    <a href="#" class="link-btn" data-page="orders">عرض الكل <i class="fas fa-arrow-left"></i></a>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>العميل</th>
+                                <th>المنتج</th>
+                                <th>الإجمالي</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ORDERS PAGE ===== -->
+        <section class="page" id="pageOrders">
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-clipboard-list"></i> جميع الطلبات</h3>
+                    <div class="filters-bar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="ابحث باسم العميل أو رقم الطلب...">
+                        </div>
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">الكل</button>
+                            <button class="filter-tab" data-filter="قيد التحضير">قيد التحضير</button>
+                            <button class="filter-tab" data-filter="جاهز للتوصيل">جاهز للتوصيل</button>
+                            <button class="filter-tab" data-filter="تم التسليم">تم التسليم</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>العميل</th>
+                                <th>الواتساب</th>
+                                <th>المنتج</th>
+                                <th>الكمية</th>
+                                <th>الإجمالي</th>
+                                <th>الدفع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allOrdersBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h4>لا توجد طلبات</h4>
+                    <p>لم يتم العثور على أي طلبات مطابقة لبحثك</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== NEW ORDER MODAL ===== -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> إنشاء طلب جديد</h3>
+                <button class="modal-close" data-close="orderModal" aria-label="إغلاق">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="customerName"><i class="fas fa-user"></i> اسم العميل</label>
+                            <input type="text" id="customerName" placeholder="مثال: مريم الخاطر" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPhone"><i class="fab fa-whatsapp"></i> رقم الواتساب</label>
+                            <input type="tel" id="customerPhone" placeholder="+974 5XXX XXXX" dir="ltr" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="productName"><i class="fas fa-box"></i> نوع المنتج / الخدمة</label>
+                            <input type="text" id="productName" placeholder="مثال: بوكس كوكيز فاخر" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity"><i class="fas fa-sort-numeric-up"></i> الكمية</label>
+                            <input type="number" id="quantity" value="1" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="unitPrice"><i class="fas fa-tag"></i> سعر الوحدة (ر.ق)</label>
+                            <input type="number" id="unitPrice" placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deliveryFee"><i class="fas fa-truck"></i> رسوم التوصيل (ر.ق)</label>
+                            <input type="number" id="deliveryFee" value="0" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentStatus"><i class="fas fa-credit-card"></i> حالة الدفع</label>
+                            <select id="paymentStatus" required>
+                                <option value="مدفوع بالكامل">مدفوع بالكامل</option>
+                                <option value="عربون">عربون</option>
+                                <option value="الدفع عند الاستلام">الدفع عند الاستلام</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="notes"><i class="fas fa-sticky-note"></i> ملاحظات خاصة</label>
+                            <textarea id="notes" rows="3" placeholder="مثال: المقاس L، عبارة الإهداء: &quot;مبروك التخرج&quot;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- LIVE TOTAL -->
+                    <div class="order-total-preview">
+                        <div class="total-row">
+                            <span>المبلغ الفرعي:</span>
+                            <span id="subtotalPreview">0.00 ر.ق</span>
+                        </div>
+                        <div class="total-row">
+                            <span>رسوم التوصيل:</span>
+                            <span id="deliveryPreview">0.00 ر.ق</span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>الإجمالي الكلي:</span>
+                            <span id="grandTotalPreview">0.00 ر.ق</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close="orderModal">إلغاء</button>
+                <button class="btn btn-primary" id="btnSaveOrder">
+                    <i class="fas fa-save"></i> حفظ الطلب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== INVOICE MODAL ===== -->
+    <div class="modal-overlay" id="invoiceModal">
+        <div class="modal modal-lg">
+            <div class="modal-header no-print">
+                <h3><i class="fas fa-file-invoice"></i> معاينة الفاتورة</h3>
+                <button class="modal-close" data-close="invoiceModal" aria-label="إغلاق">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="invoiceContent">
+                <!-- Invoice content will be injected here -->
+            </div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-secondary" data-close="invoiceModal">إغلاق</button>
+                <button class="btn btn-success" id="btnWhatsApp">
+                    <i class="fab fa-whatsapp"></i> إرسال عبر واتساب
+                </button>
+                <button class="btn btn-primary" id="btnPrint">
+                    <i class="fas fa-print"></i> طباعة / حفظ PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STATUS CHANGE MODAL ===== -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-exchange-alt"></i> تغيير حالة الطلب</h3>
+                <button class="modal-close" data-close="statusModal" aria-label="إغلاق">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="status-order-info" id="statusOrderInfo"></p>
+                <div class="status-options" id="statusOptions">
+                    <button class="status-option preparing" data-status="قيد التحضير">
+                        <i class="fas fa-spinner"></i> قيد التحضير
+                    </button>
+                    <button class="status-option ready" data-status="جاهز للتوصيل">
+                        <i class="fas fa-truck"></i> جاهز للتوصيل
+                    </button>
+                    <button class="status-option delivered" data-status="تم التسليم">
+                        <i class="fas fa-check-circle"></i> تم التسليم
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DELETE CONFIRM MODAL ===== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle" style="color: #EF4444;"></i> تأكيد الحذف</h3>
+                <button class="modal-close" data-close="deleteModal" aria-label="إغلاق">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage" class="delete-message">هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close="deleteModal">إلغاء</button>
+                <button class="btn btn-danger" id="btnConfirmDelete">
+                    <i class="fas fa-trash"></i> حذف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST NOTIFICATIONS ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
